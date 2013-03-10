@@ -19,7 +19,7 @@ Otherwise:
 
 #### HiRedis
 
-    get clone https://github.com/redis/hiredis
+    git clone https://github.com/redis/hiredis
     cd hiredis
     make
     make install

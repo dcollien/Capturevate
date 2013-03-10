@@ -9,8 +9,8 @@ The logging server is designed to handle a large number of storage requests as f
 
 Built-In Measures and Data Recorded
 -------------------------------------
-- total clicks on a page
-- seconds spent on page
+- total clicks on the page
+- seconds spent on the page
 - total mouse distance travelled (X, Y and euclidean distance)
 - the maximum distance from the top of a page the user has scrolled
 - the size of the window (on load, and on unload after possible resizing)
