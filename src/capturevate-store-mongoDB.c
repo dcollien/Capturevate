@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <stdbool.h>
 
-#include <sys/time.h>
+#include <time.h>
 #include <sys/types.h>
 
 #include <event.h>
