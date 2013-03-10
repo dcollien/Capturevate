@@ -2,7 +2,7 @@ OPTIMIZATION?=-O2
 DEPENDENCY_TARGETS=hiredis mongoc libevent
 
 # Default settings
-STD= -std=c99 -pedantic
+STD= -std=c99 -pedantic -ansi
 WARN= -Wall
 OPT= $(OPTIMIZATION)
 
