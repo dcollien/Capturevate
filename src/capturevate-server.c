@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
 
 
    // parse args and conf file
-   for (argi = 0; argi < argc; ++argi) {
+   for (argi = 1; argi < argc; ++argi) {
       if (strcmp(argv[argi], "-c") == 0 && (argi+1 < argc)) {
          parseConfFile(argv[argi+1]);
          argi++;

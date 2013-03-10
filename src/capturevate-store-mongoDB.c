@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
    config.mongodb_port = DEFAULT_MONGO_PORT;
    config.redis_port = DEFAULT_REDIS_PORT;
 
-   for (i = 0; i < argc; ++i) {
+   for (i = 1; i < argc; ++i) {
       if (strcmp(argv[i], "-c") == 0 && (i+1 < argc)) {
          parseConfFile(argv[i+1], &config);
          i++;
