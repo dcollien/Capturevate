@@ -21,7 +21,9 @@ Built-In Measures and Data Recorded
 Using Capturevate
 ------------------
 Capturevate comes with a jQuery plugin, which can be used as follows:
-    &lt;div id="interesting"&gt;Something Interesting</div&gt;
+
+<pre>
+    &lt;div id="interesting"&gt;Something Interesting&lt;/div&gt;
     &lt;script src="jquery.min.js"&gt;&lt;/script&gt;
     &lt;script src="capturevate.js"&gt;&lt;/script&gt;
     &lt;script&gt;
@@ -38,6 +40,7 @@ Capturevate comes with a jQuery plugin, which can be used as follows:
             }
         });
     &lt;/script&gt;
+</pre>
 
 Options
 --------
