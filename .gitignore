@@ -1,0 +1,6 @@
+
+.DS_Store
+
+bin/capturevate-server
+
+bin/capturevate-store-mongoDB
