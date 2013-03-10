@@ -21,10 +21,10 @@ Built-In Measures and Data Recorded
 Using Capturevate
 ------------------
 Capturevate comes with a jQuery plugin, which can be used as follows:
-    <div id="interesting">Something Interesting</div>
-    <script src="jquery.min.js"></script>
-    <script src="capturevate.js"></script>
-    <script>
+    &lt;div id="interesting"&gt;Something Interesting</div&gt;
+    &lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="capturevate.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
         $.capturevate({
             data: {
                 user: 'foo'
@@ -37,7 +37,7 @@ Capturevate comes with a jQuery plugin, which can be used as follows:
                 }
             }
         });
-    </script>
+    &lt;/script&gt;
 
 Options
 --------
@@ -47,6 +47,7 @@ Options
 - recorders: an {object} whose values are functions which take a data object as an argument. These recorder functions will be initialised with the capturevate plugin and can be used to add to the data which is sent to the logger.
 - enabled: an {object} whose values are either true or false, defining which default recorders are activated. Un-listed recorders are activated by default, e.g. the following will enable all default recorders except mouseDistance:
 
+<pre>
     enabled: {
         pageClicks: true,
         secondsOnPage: true,
@@ -55,6 +56,7 @@ Options
         windowSize: true,
         userAgent: true
     }
+</pre>
 
 Server Requirements
 --------------------
