@@ -15,8 +15,6 @@
 #include <async.h>
 #include <adapters/libevent.h>
 
-#define DEBUG
-
 #define PACKAGE_STRING "Capturevate 0.1"
 
 #define DEFAULT_HOST "127.0.0.1"

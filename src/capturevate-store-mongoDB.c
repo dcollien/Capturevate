@@ -14,8 +14,6 @@
 #include <mongo.h>
 #include <hiredis.h>
 
-#define DEBUG
-
 #define PRIORITY_DELAY_US 10000
 
 #define MAX_KEY_SIZE 1024
