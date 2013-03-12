@@ -29,6 +29,8 @@
 
 #define DEFAULT_UNKNOWN_KEY '?'
 
+#define RECONNECT_WAIT 3
+
 #define CONF_LINE_SIZE 1024
 
 typedef struct {
@@ -53,18 +55,20 @@ static void disconnectCallback(const redisAsyncContext *redis, int status);
 static void parseConfFile(char *filename);
 
 static void brokenPipe(int signum);
+
+static inline bool connectRedis(void);
 static inline char *copyStringUntil(char *src, char *dest, char endChar, size_t maxSize);
-static inline void storeData(char *data, unsigned long timestamp, redisAsyncContext *redis);
+static inline void storeData(char *data, unsigned long timestamp);
 
 static struct event_base *base = NULL;
+redisAsyncContext *redis = NULL;
+
 static config_t config;
 
 int main(int argc, char **argv) {
    int argi;
 
    struct evhttp *http_server = NULL;
-   redisAsyncContext *redis = NULL;
-
 
    // set defaults      
    config.http_port = DEFAULT_PORT;
@@ -103,15 +107,9 @@ int main(int argc, char **argv) {
    base = event_base_new();
 
    // connect to redis
-   redis = redisAsyncConnect(config.redis_addr, config.redis_port);
-   if (redis == NULL || redis->err) {
-      if (redis != NULL) {
-         fprintf(stderr, "Redis Connection Error: %s\n", redis->errstr);
-      } else {
-         fprintf(stderr, "Redis Allocation Error.\n");
-      }
-
-      return EXIT_FAILURE;
+   while (!connectRedis()) {
+      sleep(RECONNECT_WAIT);
+      fprintf(stderr, "Reconnecting...");
    }
 
    // attach redis context to the base event loop
@@ -126,7 +124,7 @@ int main(int argc, char **argv) {
    // bind to a particular address and port (can be specified via argvs)
    evhttp_bind_socket(http_server, config.http_addr, config.http_port);
    // set loggingRequestHandler as a callback for all requests (no others are caught specifically)
-   evhttp_set_gencb(http_server, loggingRequestHandler, (void *)redis);
+   evhttp_set_gencb(http_server, loggingRequestHandler, NULL);
 
    printf(PACKAGE_STRING " Logging Server started on %s port %d\n", config.http_addr, config.http_port);
    event_base_dispatch(base);
@@ -146,20 +144,37 @@ static void brokenPipe(int signum) {
    fprintf(stderr, "Broken Pipe\n");
 }
 
+static inline bool connectRedis(void) {
+   if (redis != NULL) {
+      redisAsyncFree(redis);
+   }
+   
+   redis = redisAsyncConnect(config.redis_addr, config.redis_port);
+   if (redis == NULL || redis->err) {
+      if (redis != NULL) {
+         fprintf(stderr, "Redis Connection Error: %s\n", redis->errstr);
+      } else {
+         fprintf(stderr, "Redis Allocation Error.\n");
+      }
+      return false;
+   }
+   return true;
+}
+
 static void connectCallback(const redisAsyncContext *redis, int status) {
    if (status != REDIS_OK) {
-      printf("Error: %s\n", redis->errstr);
-      return;
+      fprintf(stderr, "Redis Error: %s\n", redis->errstr);
    }
    printf("Redis Connected...\n");
 }
 
 static void disconnectCallback(const redisAsyncContext *redis, int status) {
    if (status != REDIS_OK) {
-      printf("Error: %s\n", redis->errstr);
-      return;
+      fprintf(stderr, "Redis Error: %s\n", redis->errstr);
    }
-   fprintf(stderr, "Redis Disconnected...\n");
+   printf("Redis Disconnected...\n");
+
+   connectRedis();
 }
 
 // N.B. converts ' ' to '+' in src
@@ -183,7 +198,7 @@ static inline char *copyStringUntil(char *src, char *dest, char endChar, size_t 
    return src;
 }
 
-static inline void storeData(char *data, unsigned long timestamp, redisAsyncContext *redis) {
+static inline void storeData(char *data, unsigned long timestamp) {
    static unsigned short requestNum = 0;
 
    char field[config.max_field_size];
@@ -293,8 +308,8 @@ void loggingRequestHandler(struct evhttp_request *request, void *arg) {
    #ifdef DEBUG
    printf("Storing Data: %s\n", decodedText);
    #endif
-   
-   storeData(decodedText, timestamp, (redisAsyncContext *)arg);
+
+   storeData(decodedText, timestamp);
 
    if (decodedText != NULL) {
       free(decodedText);
