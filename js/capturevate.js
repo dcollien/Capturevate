@@ -62,14 +62,25 @@
 
         userAgent: function(data) {
             data['userAgent'] = navigator.userAgent;
+        },
+
+        charsTyped: function(data) {
+            $(document).keypress(function() {
+                data['charsTyped'] = (data['charsTyped'] || 0) + 1;
+            });
+        },
+        
+        documentHeight: function(data) {
+            $(window).load(function() {
+                data['documentHeight'] = $('body').innerHeight();
+            });
         }
     };
 
     if (typeof jQuery !== 'undefined') {
         jQuery.capturevate = function() {
             var default_options = {
-                host: 'http://127.0.0.1',
-                port: '8088',
+                url: 'http://127.0.0.1/',
                 enabled: {},
                 recorders: {},
                 data: {}
@@ -105,11 +116,8 @@
                         val(data);
                     });
 
-                    url = options.host;
-                    if (options.port) {
-                        url += ':' + options.port
-                    }
-
+                    url = options.url;
+                    
                     data['event'] = 'load';
                     $.ajax({
                         'type': 'post',

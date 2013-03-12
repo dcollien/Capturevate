@@ -9,14 +9,16 @@ The logging server is designed to handle a large number of storage requests as f
 
 Built-In Measures and Data Recorded
 -------------------------------------
-- total clicks on the page
-- seconds spent on the page
-- total mouse distance travelled (X, Y and euclidean distance)
-- the maximum distance from the top of a page the user has scrolled
-- the size of the window (on load, and on unload after possible resizing)
-- user agent data (browser and operating system information of the user)
-- the location path (e.g. /index.html)
-- a user (if supplied in the data option)
+1.  total clicks on the page
+2.  seconds spent on the page
+3.  total mouse distance travelled (X, Y and euclidean distance)
+4.  the maximum distance from the top of a page the user has scrolled
+5.  the size of the window (on load, and on unload after possible resizing)
+6.  the height of the document (regardless of window size)
+7.  number of characters typed
+8.  user agent data (browser and operating system information of the user)
+9.  the location path (e.g. /index.html)
+10. a user (if supplied in the data option) is expected, otherwise '?' is used
 
 Using Capturevate
 ------------------
@@ -57,7 +59,9 @@ Options
         mouseDistance: false,
         scrollDistance: true,
         windowSize: true,
-        userAgent: true
+        userAgent: true,
+        charsTyped: true,
+        documentHeight: true
     }
 </pre>
 
