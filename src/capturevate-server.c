@@ -290,9 +290,15 @@ void loggingRequestHandler(struct evhttp_request *request, void *arg) {
 
    decodedText = evhttp_decode_uri(requestText);
 
+   #ifdef DEBUG
+   printf("Storing Data: %s\n", decodedText);
+   #endif
+   
    storeData(decodedText, timestamp, (redisAsyncContext *)arg);
 
-   free(decodedText);
+   if (decodedText != NULL) {
+      free(decodedText);
+   }
    
    return;
 }
