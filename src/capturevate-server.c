@@ -303,9 +303,10 @@ void loggingRequestHandler(struct evhttp_request *request, void *arg) {
    evhttp_add_header(request->output_headers, "Access-Control-Allow-Origin", "*");
    evhttp_send_reply(request, HTTP_OK, "OK", NULL);
 
+   memset(requestText, '\0', sizeof(char) * config.max_data_size);
    evbuffer_copyout(request->input_buffer, (void *)requestText, config.max_data_size);
    requestText[config.max_data_size-1] = '\0';
-
+   
    decodedText = evhttp_decode_uri(requestText);
 
    #ifdef DEBUG

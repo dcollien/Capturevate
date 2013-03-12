@@ -69,7 +69,7 @@
                 data['charsTyped'] = (data['charsTyped'] || 0) + 1;
             });
         },
-        
+
         documentHeight: function(data) {
             $(window).load(function() {
                 data['documentHeight'] = $('body').innerHeight();
@@ -104,6 +104,10 @@
 
                     if (typeof data.path === 'undefined') {
                         data.path = window.location.pathname;
+                    }
+
+                    if (typeof data.host == 'undefined') {
+                        data.host = window.location.host;
                     }
 
                     $.each(recorders, function(key, val) {
