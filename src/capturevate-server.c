@@ -146,9 +146,10 @@ static void brokenPipe(int signum) {
 
 static inline bool connectRedis(void) {
    if (redis != NULL) {
+      fprintf(stderr, "Removing previous redis connection.\n", );
       redisAsyncFree(redis);
    }
-   
+   fprintf(stderr, "Connecting to redis...\n", );
    redis = redisAsyncConnect(config.redis_addr, config.redis_port);
    if (redis == NULL || redis->err) {
       if (redis != NULL) {
