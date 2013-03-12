@@ -151,7 +151,7 @@ static inline bool connectRedis(void) {
       redis = NULL;
    }
 
-   fprintf(stderr, "Connecting to redis...\n";
+   fprintf(stderr, "Connecting to redis...\n");
    redis = redisAsyncConnect(config.redis_addr, config.redis_port);
    if (redis == NULL || redis->err) {
       if (redis != NULL) {
