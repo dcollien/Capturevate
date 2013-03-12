@@ -148,7 +148,9 @@ static inline bool connectRedis(void) {
    if (redis != NULL) {
       fprintf(stderr, "Removing previous redis connection.\n", );
       redisAsyncFree(redis);
+      redis = NULL;
    }
+   
    fprintf(stderr, "Connecting to redis...\n", );
    redis = redisAsyncConnect(config.redis_addr, config.redis_port);
    if (redis == NULL || redis->err) {
@@ -162,16 +164,16 @@ static inline bool connectRedis(void) {
    return true;
 }
 
-static void connectCallback(const redisAsyncContext *redis, int status) {
+static void connectCallback(const redisAsyncContext *context, int status) {
    if (status != REDIS_OK) {
-      fprintf(stderr, "Redis Error: %s\n", redis->errstr);
+      fprintf(stderr, "Redis Error: %s\n", context->errstr);
    }
    printf("Redis Connected...\n");
 }
 
-static void disconnectCallback(const redisAsyncContext *redis, int status) {
+static void disconnectCallback(const redisAsyncContext *context, int status) {
    if (status != REDIS_OK) {
-      fprintf(stderr, "Redis Error: %s\n", redis->errstr);
+      fprintf(stderr, "Redis Error: %s\n", context->errstr);
    }
    printf("Redis Disconnected...\n");
 
