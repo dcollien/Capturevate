@@ -30,6 +30,7 @@ Capturevate comes with a jQuery plugin, which can be used as follows:
     &lt;script src="capturevate.js"&gt;&lt;/script&gt;
     &lt;script&gt;
         $.capturevate({
+            url: 'http://capture.example.com/',
             data: {
                 user: 'foo'
             },
@@ -46,8 +47,7 @@ Capturevate comes with a jQuery plugin, which can be used as follows:
 
 Options
 --------
-- host: specifies the host of the logging server, defaults to 'http://127.0.0.1'
-- port: specifies the port of the logging server, defaults to 8088
+- url: specifies the host of the logging server, defaults to 'http://127.0.0.1/'
 - data: an {object} containing extra data to send with the recorded behaviours. It is expected that the 'user' key will contain a user ID (otherwise '?' is used)
 - recorders: an {object} whose values are functions which take a data object as an argument. These recorder functions will be initialised with the capturevate plugin and can be used to add to the data which is sent to the logger.
 - enabled: an {object} whose values are either true or false, defining which default recorders are activated. Un-listed recorders are activated by default, e.g. the following will enable all default recorders except mouseDistance:
