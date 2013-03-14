@@ -105,7 +105,50 @@ otherwise, capturevate-server takes its HTTP host and port as arguments</p>
 
 <h2>Building and Installing Capturevate</h2>
 
-<p>See <a href="./doc/building.md">Building Capturevate</a> for instructions</p>
+Library Requirements:
+<ul>
+  <li>libevent (https://github.com/libevent/libevent)</li>
+  <li>hiredis (https://github.com/redis/hiredis)</li>
+  <li>mongo-c-driver (https://github.com/mongodb/mongo-c-driver)</li>
+</ul>
+
+<h4>LibEvent</h4>
+
+LibEvent can normally be installed via a package manager. e.g. <code>apt-get install libevent-dev</code>
+
+Otherwise:
+<pre>
+git clone https://github.com/libevent/libevent
+cd libevent
+./configure && make
+</pre>
+
+<h4>HiRedis</h4>
+<pre>
+git clone https://github.com/redis/hiredis
+cd hiredis
+make
+make install
+</pre>
+(the last step may require sudo depending on your system setup)
+
+<h4>MongoC</h4>
+<pre>
+git clone https://github.com/mongodb/mongo-c-driver
+cd mongo-c-driver
+scons
+make install
+</pre>
+(the last step may require sudo depending on your system setup)
+
+<h3>Capturevate</h3>
+    
+Once the libraries are installed:
+<pre>
+make
+</pre>
+Will create the binaries in the bin/ folder
+      
       </section>
     </div>
     <footer>
