@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Capturevate by dcollien</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Capturevate</h1>
+        <p>A scalable, very fast and simple method of capturing and storing web app interaction data for later analysis.</p>
+        <p class="view"><a href="https://github.com/dcollien/Capturevate">View the Project on GitHub <small>dcollien/Capturevate</small></a></p>
+        <ul>
+          <li><a href="https://github.com/dcollien/Capturevate/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/dcollien/Capturevate/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/dcollien/Capturevate">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>Capturevate: Capturing Captivation</h2>
+
+<p>The aim of Capturevate is to collect web-site interaction data to measure user engagement and captivation. Capturevate stores a user's interaction behaviour with various page elements for later analysis.</p>
+
+<p>This service captures user interaction events in the browser (javascript). These events are sent on page load (asynchronously) and unload (synchronously, before the user navigates away) to a logging server to be stored for later analyis.</p>
+
+<p>The logging server is designed to handle a large number of storage requests as fast as possible, as to not to have any detectable impact on the browsing experience. The logging server caches this interaction data in redis (to be fast) and a separate service drains the cache to persist the data for analysis. A service is provided which drains the redis cache into mongoDB for storage.</p>
+
+<h2>Built-In Measures and Data Recorded</h2>
+
+<ol>
+<li> total clicks on the page</li>
+<li> seconds spent on the page</li>
+<li> total mouse distance travelled (X, Y and euclidean distance)</li>
+<li> the maximum distance from the top of a page the user has scrolled</li>
+<li> the size of the window (on load, and on unload after possible resizing)</li>
+<li> the height of the document (regardless of window size)</li>
+<li> number of characters typed</li>
+<li> user agent data (browser and operating system information of the user)</li>
+<li> the location path (e.g. /index.html)</li>
+<li>a user (if supplied in the data option) is expected, otherwise '?' is used</li>
+</ol><h2>Using Capturevate</h2>
+
+<p>Capturevate comes with a jQuery plugin, which can be used as follows:</p>
+
+<pre>
+    &lt;div id="interesting"&gt;Something Interesting&lt;/div&gt;
+    &lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script src="capturevate.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $.capturevate({
+            url: 'http://capture.example.com/',
+            data: {
+                user: 'foo'
+            },
+            recorders: {
+                interestingClicks: function(data) {
+                    $('#interesting').click(function() {
+                        data['interestingClicks'] = (data['interestingClicks'] || 0) + 1;
+                    });
+                }
+            }
+        });
+    &lt;/script&gt;
+</pre>
+
+<h2>Options</h2>
+
+<ul>
+<li>url: specifies the host of the logging server, defaults to '<a href="http://127.0.0.1/">http://127.0.0.1/</a>'</li>
+<li>data: an {object} containing extra data to send with the recorded behaviours. It is expected that the 'user' key will contain a user ID (otherwise '?' is used)</li>
+<li>recorders: an {object} whose values are functions which take a data object as an argument. These recorder functions will be initialised with the capturevate plugin and can be used to add to the data which is sent to the logger.</li>
+<li>enabled: an {object} whose values are either true or false, defining which default recorders are activated. Un-listed recorders are activated by default, e.g. the following will enable all default recorders except mouseDistance:</li>
+</ul><pre>
+    enabled: {
+        pageClicks: true,
+        secondsOnPage: true,
+        mouseDistance: false,
+        scrollDistance: true,
+        windowSize: true,
+        userAgent: true,
+        charsTyped: true,
+        documentHeight: true
+    }
+</pre>
+
+<h2>Server Requirements</h2>
+
+<p>The logging server (capturevate-server) depends on the libevent and hiredis libraries (and redis to be running). The mongoDB storage service (capturevate-store-mongoDB) depends on the hiredis and mongoc libraries (and redis + mongod to be running).</p>
+
+<p>in ./conf/:
+capturevate-server.conf and capturevate-store-mongoDB.conf specify example connection options to redis and mongoDB.</p>
+
+<p>Run <code>capturevate-server</code> or <code>capturevate-store-mongoDB</code> with <code>-c &lt;config-file&gt;</code> to specify the configuration file.
+otherwise, capturevate-server takes its HTTP host and port as arguments</p>
+
+<h2>Building and Installing Capturevate</h2>
+
+<p>See <a href="./doc/building.md">Building Capturevate</a> for instructions</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/dcollien">dcollien</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
